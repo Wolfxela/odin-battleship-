@@ -1,16 +1,9 @@
  /* eslint-disable */
 import { board,shipMaker } from "./main"
-
-test('make the game board of size 2x2',()=>{
-
-    const gameboard = board.makeBoard(2);
-    expect(gameboard).toHaveLength(4)
-
-})
 test('make 2 game boards of size 8x8',()=>{
 
-    const playerGameboard = board.makeBoard(8);
-    const enemyGameBoard = board.makeBoard(8)
+    const playerGameboard = board.makeBoard();
+    const enemyGameBoard = board.makeBoard()
     expect(playerGameboard).toHaveLength(64)
     expect(enemyGameBoard).toHaveLength(64)
 
@@ -37,3 +30,28 @@ test('test if ship can be sunk when another ship is made with another length',()
     ship.hit()
     expect(ship.hasBeenSunk).toBe(true)
 })
+test('test if ship is placed',()=>{
+    const ship = shipMaker(3)
+    const playerGameboard = board.makeBoard();
+    board.placeShip(playerGameboard,["a",1],3)
+
+    expect(JSON.stringify(playerGameboard[1][1])).toEqual(JSON.stringify(ship))
+    expect(JSON.stringify(playerGameboard[2][1])).toEqual(JSON.stringify(ship))
+    expect(JSON.stringify(playerGameboard[3][1])).toEqual(JSON.stringify(ship))
+})
+test('test if ship is denied placement in a bad location',()=>{
+    const ship = shipMaker(3)
+    const playerGameboard = board.makeBoard();
+    expect(board.placeShip(playerGameboard,["a",-6],3)).toBe(false)
+
+
+})
+
+test('test if ship is accepted placement in a good location',()=>{
+    const ship = shipMaker(3)
+    const playerGameboard = board.makeBoard();
+    expect(board.placeShip(playerGameboard,["a",3],3)).toBe(true)
+
+
+})
+

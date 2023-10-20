@@ -1,19 +1,46 @@
 
 const board = (function(){
 
-    const makeBoard = function(size)
+    const makeBoard = function()
     {
-        const spot = "Spot"
         const array = []
-        for(let i = 0;i<size*size;i++)
-        {
-            array.push(spot)
-        }
+        const letters = ["a","b","c","d","e","f","g","h"]
+        letters.forEach(element => {
+            for(let i = 0;i<8;i++){
+                array.push([element,null])
+            }
+        });
         return array
 
     }
 
-    return{makeBoard}
+    const findSpot = function(coords,board)
+    {
+        for(let i = 0;i<board.length;)
+        {
+            if(board[i][0] === coords[0])
+            {
+                return i+coords[1]
+            }
+            i+= 8
+        }
+    }
+
+    const placeShip = function(gameboard,coords,shipLength)
+    {
+        if(coords[1] +shipLength > 8 || coords[1] +shipLength < 0)
+        {
+            return false
+        }
+        const spot = findSpot(coords,gameboard)
+        const ship = shipMaker(shipLength)
+        for(let i = 0; i < shipLength;i++)
+        {
+            gameboard[spot+i][1] = ship
+        }
+        return true
+    }
+    return{makeBoard,placeShip}
 
 })();
 
@@ -31,7 +58,7 @@ const shipMaker = function(inputLength)
             this.hasBeenSunk = true
         }
     }
-    
+
     return{length,hits,hit,hasBeenSunk}
 }
 export{board,shipMaker}
