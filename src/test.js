@@ -1,5 +1,5 @@
  /* eslint-disable */
-import { board,shipMaker } from "./main"
+import { board,shipMaker,gameBoardMaker } from "./main"
 test('make 2 game boards of size 8x8',()=>{
 
     const playerGameboard = board.makeBoard();
@@ -54,4 +54,58 @@ test('test if ship is accepted placement in a good location',()=>{
 
 
 })
+test('test if 2 ships cant be placed together in the same spot',()=>{
+    const ship = shipMaker(3)
+    const playerGameboard = board.makeBoard();
+    expect(board.placeShip(playerGameboard,["a",3],3)).toBe(true)
+    expect(board.placeShip(playerGameboard,["a",3],3)).toBe(false)
+
+
+})
+test('test if we can hit a ship',()=>{
+    const enemyBoard = gameBoardMaker();
+    expect(enemyBoard.atack(1)).toBe("hit")
+})
+test('test if we can hit a ship twice',()=>{
+    const enemyBoard = gameBoardMaker();
+    expect(enemyBoard.atack(1)).toBe("hit")
+    expect(enemyBoard.atack(1)).toBe(false)
+})
+test('test if we can hit a empty spot',()=>{
+    const enemyBoard = gameBoardMaker();
+    expect(enemyBoard.atack(10)).toBe(true)
+})
+test('test if we can hit a empty spot twice',()=>{
+    const enemyBoard = gameBoardMaker();
+    expect(enemyBoard.atack(10)).toBe(true)
+    expect(enemyBoard.atack(10)).toBe(false)
+})
+test('test if we can sink a ship',()=>{
+    const enemyBoard = gameBoardMaker();
+    enemyBoard.atack(1)
+    enemyBoard.atack(2)
+    enemyBoard.atack(3)
+    expect(enemyBoard.atack(4)).toBe("sunk")
+} )
+test('test if we can sink all ships if 1 ship exists',()=>{
+    const enemyBoard = gameBoardMaker();
+    enemyBoard.atack(1)
+    enemyBoard.atack(2)
+    enemyBoard.atack(3)
+    enemyBoard.atack(4)
+    expect(enemyBoard.hasLost()).toBe(true)
+})
+// test.skip('test if we can sink all ships if 2 ships exists',()=>{
+//     const enemyBoard = gameBoardMaker();
+//     enemyBoard.atack(1)
+//     enemyBoard.atack(2)
+//     enemyBoard.atack(3)
+//     enemyBoard.atack(4)
+//     enemyBoard.atack(9)
+//     enemyBoard.atack(10)
+//     enemyBoard.atack(11)
+//     enemyBoard.atack(12)
+//     expect(enemyBoard.hasLost()).toBe(true)
+// })
+
 
