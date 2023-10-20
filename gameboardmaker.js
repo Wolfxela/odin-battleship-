@@ -30,16 +30,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
-/***/ "./src/main.js":
-/*!*********************!*\
-  !*** ./src/main.js ***!
-  \*********************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _boardmaker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./boardmaker */ \"./src/boardmaker.js\");\n/* harmony import */ var _gameboardmaker__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./gameboardmaker */ \"./src/gameboardmaker.js\");\n\n\n\nconst gameData = (function()\n{\n    const letters = [\"a\",\"b\",\"c\",\"d\",\"e\",\"f\",\"g\",\"h\"]\n    const randomisePlacement = function(array,inputBoard)\n    {\n        while(array[0] !== undefined)\n        {\n            const randomLetterNum = letters[Math.floor(Math.random() * 8)];\n            const randomSpaceNum = Math.floor(Math.random() * 9);\n            if(_boardmaker__WEBPACK_IMPORTED_MODULE_0__.boardMaker.placeShip(inputBoard,[randomLetterNum,randomSpaceNum],array[0]) === true)\n            {\n                _boardmaker__WEBPACK_IMPORTED_MODULE_0__.boardMaker.placeShip(inputBoard,[randomLetterNum,randomSpaceNum],array[0])\n                array.shift() \n            }\n\n        }\n    }\n    return{randomisePlacement}\n\n\n})();\n\n\nconst gameManager = (function(){\n    const player = (0,_gameboardmaker__WEBPACK_IMPORTED_MODULE_1__.gameBoardMaker)()\n    const enemy = (0,_gameboardmaker__WEBPACK_IMPORTED_MODULE_1__.gameBoardMaker)()\n    gameData.randomisePlacement(enemy.ships,enemy.gameBoard)\n\n    let turn = null;\n\n    const start = function()\n    {\n        turn = player\n    }\n\n    const place = function(number)\n    {\n        const output = turn.atack(number)\n        if(output === false)\n        {\n            return console.log(\"already placed here\")\n        }\n        else if(output === \"hit\")\n        {\n            if(turn === enemy)\n            {\n                const randomNumber = Math.floor(Math.random() * 63);\n                turn = player\n                place(randomNumber)\n            }\n            else if(turn === player)\n            {\n                turn = enemy\n\n            }\n            console.log(\"enemy\")\n            return console.log(\"hit!\")\n            \n        }\n        else\n        {\n            if(turn === enemy)\n            {\n                const randomNumber = Math.floor(Math.random() * 63);\n                turn = player\n                place(randomNumber)\n            }\n            else if(turn === player)\n            {\n                turn = enemy\n            }\n        }\n        \n    }\n    return{start,place,player}\n})();\n\ngameManager.player.place([\"a\",1])\ngameManager.player.place([\"b\",1])\ngameManager.player.place([\"c\",1])\ngameManager.player.place([\"d\",1])\ngameManager.player.place([\"e\",1])\ngameManager.player.place([\"f\",1])\ngameManager.start()\nconsole.log(\"player\")\ngameManager.place(1)\nconsole.log(\"player\")\ngameManager.place(2)\nconsole.log(\"player\")\ngameManager.place(3)\nconsole.log(\"player\")\ngameManager.place(4)\nconsole.log(\"player\")\ngameManager.place(5)\nconsole.log(gameManager.player.atackedSpots)\nconsole.log(gameManager.player.gameBoard)\n\n\n\n//# sourceURL=webpack://odin-battleship-/./src/main.js?");
-
-/***/ }),
-
 /***/ "./src/shipmaker.js":
 /*!**************************!*\
   !*** ./src/shipmaker.js ***!
@@ -110,7 +100,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module can't be inlined because the eval devtool is used.
-/******/ 	var __webpack_exports__ = __webpack_require__("./src/main.js");
+/******/ 	var __webpack_exports__ = __webpack_require__("./src/gameboardmaker.js");
 /******/ 	
 /******/ })()
 ;
