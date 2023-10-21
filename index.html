@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
     <script src="./shipmaker.js" defer></script>
     <script src="./boardmaker.js" defer></script>
     <script src="./gameboardmaker.js" defer></script>
@@ -21,9 +22,9 @@
             <div class="log">The enemy is here</div>
             <div class="log">We're ready to fire!</div></div>
             <div class="playerBoard">
-                <div class="spot"></div>
-                <div class="spot"></div>
-                <div class="spot"></div>
+                <div class="spot hasShip"></div>
+                <div class="spot destroyed"></div>
+                <div class="spot atacked"></div>
                 <div class="spot"></div>
                 <div class="spot"></div>
                 <div class="spot"></div>
@@ -90,9 +91,9 @@
 
             </div>
             <div class="options">
-            <button class="begin"></button>
-            <button class="random"></button>
-            <button class="reset"></button>
+            <button class="optionBtn begin">Begin</button>
+            <button class="optionBtn random">Randomise!</button>
+            <button class="optionBtn reset">Reset!</button>
             </div>
         </div>
     </div>
