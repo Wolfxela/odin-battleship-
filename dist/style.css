@@ -1,0 +1,186 @@
+
+body {
+    height: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color:rgb(250, 255, 252);
+}
+.content
+{
+    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.header
+{
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.gameContainer
+{
+    flex-grow: 20;
+    display: flex;
+    align-items: center;
+    padding-right: 10vw;
+    padding-bottom: 200px;
+    justify-content: space-between;
+}
+.captainLog
+{
+    height: 25vh;
+    border-style: ridge;
+    border-color: grey;
+    border-radius: 5px;
+    border-width: 5px;
+    gap: 10px;
+    display: flex;
+    background-color: black;
+    flex-direction: column;
+    justify-content: flex-start;
+    transform: translate(70%, 130%) rotate(85deg);
+    animation: getLog 1s cubic-bezier(0.63,-0.48, 0.26, 1.49) 0s 1 normal forwards;
+}
+.log
+{
+    color: transparent;
+    text-align: center;
+    animation: showText 2s ease-in-out 1s 1 normal forwards;
+}
+@keyframes getLog {
+    0%
+    {
+         transform: translate(70%, 130%) rotate(85deg);
+    }
+
+    100%
+    {
+        transform:translate(0%, 0%) rotate(0deg);
+        color: aqua;
+    }
+}
+@keyframes showText {
+    0%
+    {
+        color: transparent;
+    }
+    5%
+    {
+        color: green;
+    }
+    10%
+    {
+        color: rgba(0, 128, 0, 0.61);
+    }
+    15%
+    {
+        color: green;
+    }
+    30%
+    {
+        color: transparent;
+    }
+    45%
+    {
+        color: green;
+    }
+    50%
+    {
+        color: rgba(0, 128, 0, 0.61);
+    }
+    55%
+    {
+        color: transparent;
+    }
+    100%
+    {
+        color: green;
+    }
+    
+}
+.playerBoard
+{
+    height: 45vh;
+    width: 30vw;
+    border-style: solid;
+    border-color: blue;
+    border-radius: 1px;
+    border-width: 2px;
+    display: grid;
+    grid-template-columns: repeat(8,1fr);
+    grid-template-rows: repeat(8,1fr);
+}
+.enemyBoard
+{
+    height: 45vh;
+    width: 30vw;
+    border-style: solid;
+    border-color: blue;
+    border-radius: 1px;
+    border-width: 2px;
+}
+.options
+{
+    position: absolute;
+    left: 20vw;
+    width: 30vw;
+    display: flex;
+    top: 69vh;
+    gap: 7vw;
+    justify-content: flex-start;
+}
+.title
+{
+    font-size: 4vw;
+    display: flex;
+    align-items: center;
+}
+.madeBy
+{
+    font-size: 1vw;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 10px;
+}
+.optionBtn
+{
+    background-color: transparent;
+    border-radius: 10px;
+    border-color: cornflowerblue;
+    border-style: dotted;
+}
+.optionBtn:hover
+{
+    border-color: gold;
+}
+.optionBtn:active
+{
+    border-color: green;
+}
+.spot
+{
+    border-color: rgb(105, 105, 255);
+    border-width: 1px;
+    border-style: solid;
+}
+.spot:hover
+{
+    border-color: rgb(243, 255, 82);
+    border-width: 1px;
+    border-style: solid;
+}
+.hasShip
+{
+    background-color: green;
+}
+.destroyed
+{
+    background-color: red;
+}
+.atacked
+{
+    background-color: gray;
+}
