@@ -12,8 +12,6 @@ const gameData = (function()
             const randomSpaceNum = Math.floor(Math.random() * 9);
             if(boardMaker.placeShip(inputBoard,[randomLetterNum,randomSpaceNum],array[0]) === true)
             {
-                 // test to see if it works without this bottom line
-                boardMaker.placeShip(inputBoard,[randomLetterNum,randomSpaceNum],array[0])
                 array.shift() 
             }
 
@@ -34,7 +32,7 @@ const gameManager = (function(){
 
     const start = function()
     {
-        turn = player
+        turn = enemy
     }
 
     const fireAt = function(number)
@@ -46,6 +44,10 @@ const gameManager = (function(){
         }
         else if(output === "hit")
         {
+            if(turn.hasLost() === true)
+            {
+                return turn.name
+            }
             if(turn === enemy)
             {
                 const randomNumber = Math.floor(Math.random() * 63);

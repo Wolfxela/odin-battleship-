@@ -1,6 +1,7 @@
 import { boardMaker } from "./boardmaker";
-const gameBoardMaker = function()
+const gameBoardMaker = function(inputName)
 {
+    const name = inputName
     let shipsleft = 6;
     const atackedSpots = []
     const ships = [4,3,3,2,2,1]
@@ -12,8 +13,6 @@ const gameBoardMaker = function()
         {
             if(boardMaker.placeShip(this.gameBoard,coords,ships[0]) === true)
             {
-                // test to see if it works without this bottom line
-                boardMaker.placeShip(gameBoard,coords,ships[0])
                 ships.shift()
             }
         }
@@ -53,7 +52,7 @@ const gameBoardMaker = function()
         }
         return false
     }
-    return{atackedSpots,ships,gameBoard,atack,hasLost,place}
+    return{name,atackedSpots,ships,gameBoard,atack,hasLost,place}
 }
 
 export{gameBoardMaker}
