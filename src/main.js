@@ -42,7 +42,7 @@ const domHandler = (function(){
                 {
                     spot.classList.add('atacked')
                 }
-                if(result !== 'win' && result !== "already placed here" )
+                if(result !== 'win' && result !== "already placed here" && gameManager.player.ships.length <= 0 )
                 {
                     while(true)
                     {
