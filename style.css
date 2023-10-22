@@ -31,6 +31,9 @@ body {
 }
 .captainLog
 {
+    width: 9vw;
+    overflow-y: auto;
+    scroll-behavior: auto;
     height: 25vh;
     border-style: ridge;
     border-color: grey;
@@ -42,13 +45,23 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     transform: translate(70%, 130%) rotate(85deg);
+}
+.deactivated:hover
+{
+    border-color: gold;
+}
+.consoleActivated
+{
     animation: getLog 1s cubic-bezier(0.63,-0.48, 0.26, 1.49) 0s 1 normal forwards;
+}
+.logActivated
+{
+    animation: showText 2s ease-in-out 1s 1 normal forwards;
 }
 .log
 {
     color: transparent;
     text-align: center;
-    animation: showText 2s ease-in-out 1s 1 normal forwards;
 }
 @keyframes getLog {
     0%
@@ -121,6 +134,9 @@ body {
     border-color: blue;
     border-radius: 1px;
     border-width: 2px;
+    display: grid;
+    grid-template-columns: repeat(8,1fr);
+    grid-template-rows: repeat(8,1fr);
 }
 .options
 {
