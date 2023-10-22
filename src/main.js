@@ -49,6 +49,7 @@ const domHandler = (function(){
                         const isValid =  gameManager.getFiredAt(Math.floor(Math.random() * 63))
                         if(isValid=== 'hit'|| isValid === true) 
                         {
+
                             break
                         }
                     }
@@ -90,7 +91,6 @@ const gameManager = (function(){
             const output = enemy.atack(number)
             if(enemy.hasLost() === true)
             {
-                console.log(enemy.shipsleft)
                 const log = generalFuncModule.insertElement('div','log','we won captain!',captainLog)
                 log.classList.add('logActivated')
                 return 'win'
@@ -152,8 +152,8 @@ const gameManager = (function(){
         this.player.ships = [4,3,3,2,2,1]
         this.player.atackedSpots = []
         this.enemy.atackedSpots = []
-        this.player.shipsleft = 6
-        this.enemy.shipsleft = 6
+        this.player.setShipsLeft(6)
+        this.enemy.setShipsLeft(6)
         gameData.randomisePlacement(enemy.ships,enemy.gameBoard)
         generalFuncModule.clearDom(captainLog,'.log')
         domHandler.clearBoards()

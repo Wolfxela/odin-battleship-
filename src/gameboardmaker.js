@@ -27,7 +27,10 @@ const gameBoardMaker = function(inputName)
             }
         }
     }
-
+    const setShipsLeft = function(input)
+    {
+        this.shipsleft = input
+    }
     const atack = function(spot)
     {
         for (let i = 0; i < atackedSpots.length; i++) {
@@ -56,13 +59,13 @@ const gameBoardMaker = function(inputName)
     }
     const hasLost = function()
     {
-        if(this.shipsleft <=0)
+        if(shipsleft <=0)
         {
             return true
         }
         return false
     }
-    return{shipsleft,name,atackedSpots,ships,gameBoard,atack,hasLost,place}
+    return{setShipsLeft,name,atackedSpots,ships,gameBoard,atack,hasLost,place}
 }
 
 export{gameBoardMaker}
