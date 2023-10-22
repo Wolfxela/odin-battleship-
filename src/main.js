@@ -38,7 +38,7 @@ const domHandler = (function(){
                     spot.classList.add('destroyed')
                     
                 }
-                else if(result !== false)
+                else if(result !== "already placed here")
                 {
                     spot.classList.add('atacked')
                 }
@@ -61,7 +61,6 @@ const domHandler = (function(){
         else
         {
             spot.addEventListener('click',function(){
-                console.log(gameManager.player.ships)
                 const number = Array.from(spot.parentNode.children).indexOf(spot)
                 const index = getCoordsFrom(number)
                 gameManager.player.place(index,number)
@@ -91,9 +90,9 @@ const gameManager = (function(){
             const output = enemy.atack(number)
             if(enemy.hasLost() === true)
             {
+                console.log(enemy.shipsleft)
                 const log = generalFuncModule.insertElement('div','log','we won captain!',captainLog)
                 log.classList.add('logActivated')
-                console.log("you won!")
                 return 'win'
             }
             else if(output === false)
@@ -121,13 +120,11 @@ const gameManager = (function(){
         {
             
             const output = player.atack(number)
-            console.log(output)
             if(player.hasLost() === true)
             {
                 list[number].classList.add('destroyed')
                 const log = generalFuncModule.insertElement('div','log','we lost captain!',captainLog)
                 log.classList.add('logActivated')
-                console.log("you lost!")
                 return 'hit'
             }
             if(output ===  true)
@@ -155,7 +152,8 @@ const gameManager = (function(){
         this.player.ships = [4,3,3,2,2,1]
         this.player.atackedSpots = []
         this.enemy.atackedSpots = []
-        console.log(player.ships)
+        this.player.shipsleft = 6
+        this.enemy.shipsleft = 6
         gameData.randomisePlacement(enemy.ships,enemy.gameBoard)
         generalFuncModule.clearDom(captainLog,'.log')
         domHandler.clearBoards()

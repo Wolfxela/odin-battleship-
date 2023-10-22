@@ -22,7 +22,6 @@ const gameBoardMaker = function(inputName)
                         list[num + n].classList.add('hasShip')
                         
                     }
-                    console.log(list[num])
                 }
                 ships.shift()
             }
@@ -57,13 +56,13 @@ const gameBoardMaker = function(inputName)
     }
     const hasLost = function()
     {
-        if(shipsleft <=0)
+        if(this.shipsleft <=0)
         {
             return true
         }
         return false
     }
-    return{name,atackedSpots,ships,gameBoard,atack,hasLost,place}
+    return{shipsleft,name,atackedSpots,ships,gameBoard,atack,hasLost,place}
 }
 
 export{gameBoardMaker}
