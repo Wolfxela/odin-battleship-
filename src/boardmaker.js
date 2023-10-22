@@ -7,7 +7,7 @@ const boardMaker = (function(){
         const letters = ["a","b","c","d","e","f","g","h"]
         letters.forEach(element => {
             for(let i = 0;i<8;i++){
-                array.push([element,null])
+                array.push([element,null,i])
             }
         });
         return array

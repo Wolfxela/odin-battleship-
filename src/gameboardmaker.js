@@ -7,12 +7,23 @@ const gameBoardMaker = function(inputName)
     const ships = [4,3,3,2,2,1]
     const gameBoard = boardMaker.makeBoard()
 
-    const place = function(coords)
+    const place = function(coords,num)
     {
+        const boardDiv = document.querySelector('.playerBoard')
         if(ships.length !== 0)
         {
             if(boardMaker.placeShip(this.gameBoard,coords,ships[0]) === true)
             {
+                const list = boardDiv.querySelectorAll('.spot')
+                if(num !== undefined)
+                {
+                    for (let n = 0; n < ships[0]; n++) 
+                    {
+                        list[num + n].classList.add('hasShip')
+                        
+                    }
+                    console.log(list[num])
+                }
                 ships.shift()
             }
         }
@@ -41,7 +52,7 @@ const gameBoardMaker = function(inputName)
         else
         {
             shipsleft -= 1
-            return "sunk"
+            return "hit"
         }
     }
     const hasLost = function()

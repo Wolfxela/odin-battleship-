@@ -1,104 +1,188 @@
-import { boardMaker } from "./boardmaker";
+import { gameData } from "./gamedata";
 import { gameBoardMaker } from "./gameboardmaker";
+import generalFuncModule from "general-functions-wolfxela";
+import { boardMaker } from "./boardmaker";
 
-const gameData = (function()
+function getCoordsFrom(number)
 {
-    const letters = ["a","b","c","d","e","f","g","h"]
-    const randomisePlacement = function(array,inputBoard)
-    {
-        while(array[0] !== undefined)
-        {
-            const randomLetterNum = letters[Math.floor(Math.random() * 8)];
-            const randomSpaceNum = Math.floor(Math.random() * 9);
-            if(boardMaker.placeShip(inputBoard,[randomLetterNum,randomSpaceNum],array[0]) === true)
-            {
-                array.shift() 
-            }
+    const board = boardMaker.makeBoard()
+    return[board[number][0],board[number][2]]
+ 
+}
+const domHandler = (function(){
 
+    const content = document.querySelector('.content')
+    const playerBoard = content.querySelector('.playerBoard')
+    const enemyBoard = content.querySelector('.enemyBoard')
+
+    const makeBoards = function()
+    {
+        for (let i = 0; i < 64; i++) {
+            makeSpot(playerBoard,true,)
+            makeSpot(enemyBoard,false)
         }
     }
-    return{randomisePlacement}
 
+    const makeSpot = function(board,isPlayer)
+    {
+        const spot = generalFuncModule.insertElement('div','spot','',board)
+        
+        if(isPlayer !== true)
+        {
+            spot.addEventListener('click',function(){
+                const index = Array.from(spot.parentNode.children).indexOf(spot)
+                const result = gameManager.fireAt(index)
 
+                if(result === "hit")
+                {
+                    spot.classList.add('destroyed')
+                    
+                }
+                else if(result !== false)
+                {
+                    spot.classList.add('atacked')
+                }
+                if(result !== 'win' && result !== "already placed here" )
+                {
+                    while(true)
+                    {
+                        const isValid =  gameManager.getFiredAt(Math.floor(Math.random() * 63))
+                        if(isValid=== 'hit'|| isValid === true) 
+                        {
+                            break
+                        }
+                    }
+
+                }
+                
+
+            })
+        }
+        else
+        {
+            spot.addEventListener('click',function(){
+                console.log(gameManager.player.ships)
+                const number = Array.from(spot.parentNode.children).indexOf(spot)
+                const index = getCoordsFrom(number)
+                gameManager.player.place(index,number)
+            })
+        }
+
+    }
+    const clearBoards = function()
+    {
+        generalFuncModule.clearDom(playerBoard,'.spot')
+        generalFuncModule.clearDom(enemyBoard,'.spot')
+    }
+    return {makeBoards,clearBoards}
 })();
 
 
 const gameManager = (function(){
-    const player = gameBoardMaker()
-    const enemy = gameBoardMaker()
+    const captainLog = document.querySelector('.captainLog')
+    const player = gameBoardMaker("player")
+    const enemy = gameBoardMaker("enemy")
     gameData.randomisePlacement(enemy.ships,enemy.gameBoard)
-
-    let turn = null;
-
-    const start = function()
-    {
-        turn = enemy
-    }
 
     const fireAt = function(number)
     {
-        const output = turn.atack(number)
-        if(output === false)
+        if(player.ships.length <= 0)
         {
-            return "already placed here"
-        }
-        else if(output === "hit")
-        {
-            if(turn.hasLost() === true)
+            const output = enemy.atack(number)
+            if(enemy.hasLost() === true)
             {
-                return turn.name
+                const log = generalFuncModule.insertElement('div','log','we won captain!',captainLog)
+                log.classList.add('logActivated')
+                console.log("you won!")
+                return 'win'
             }
-            if(turn === enemy)
+            else if(output === false)
             {
-                const randomNumber = Math.floor(Math.random() * 63);
-                turn = player
-                fireAt(randomNumber)
+                return "already placed here"
             }
-            else if(turn === player)
+            else if(output === "hit")
             {
-                turn = enemy
-
+                const log = generalFuncModule.insertElement('div','log','we got a hit!',captainLog)
+                log.classList.add('logActivated')
+                return "hit"
             }
-            return "hit!"
-            
         }
         else
         {
-            if(turn === enemy)
+            return false
+        }
+    }
+    const getFiredAt = function(number)
+    {
+        const boardDiv = document.querySelector('.playerBoard')
+        const list = boardDiv.querySelectorAll('.spot')
+
+        if(player.ships.length <= 0)
+        {
+            
+            const output = player.atack(number)
+            console.log(output)
+            if(player.hasLost() === true)
             {
-                const randomNumber = Math.floor(Math.random() * 63);
-                turn = player
-                fireAt(randomNumber)
+                list[number].classList.add('destroyed')
+                console.log("you lost!")
+                return 'hit'
             }
-            else if(turn === player)
+            if(output ===  true)
             {
-                turn = enemy
+                list[number].classList.add('atacked')
+                return true
+            }
+            else if(output === "hit")
+            {
+                list[number].classList.add('destroyed')
+                return "hit"
             }
         }
-        
+        else
+        {
+            return false
+        }
     }
-    return{start,fireAt,player}
+    const restart = function()
+    {
+        
+        this.player =gameBoardMaker("player")
+        this.enemy = gameBoardMaker("enemy")
+        this.enemy.ships = [4,3,3,2,2,1]
+        this.player.ships = [4,3,3,2,2,1]
+        this.player.atackedSpots = []
+        this.enemy.atackedSpots = []
+        console.log(player.ships)
+        gameData.randomisePlacement(enemy.ships,enemy.gameBoard)
+        generalFuncModule.clearDom(captainLog,'.log')
+        domHandler.clearBoards()
+        domHandler.makeBoards()
+    }
+    return{restart,getFiredAt,fireAt,player,enemy}
 })();
 
-// for testing
+function startGame()
+{
+    domHandler.makeBoards()
+    const captainLog = document.querySelector('.captainLog')
+    const restartBtn = document.querySelector('.reset')
+    const againBtn = document.querySelector('.begin')
 
-// gameManager.player.place(["a",1])
-// gameManager.player.place(["b",1])
-// gameManager.player.place(["c",1])
-// gameManager.player.place(["d",1])
-// gameManager.player.place(["e",1])
-// gameManager.player.place(["f",1])
-// gameManager.start()
-// console.log("player")
-// gameManager.place(1)
-// console.log("player")
-// gameManager.place(2)
-// console.log("player")
-// gameManager.place(3)
-// console.log("player")
-// gameManager.place(4)
-// console.log("player")
-// gameManager.place(5)
-// console.log(gameManager.player.atackedSpots)
-// console.log(gameManager.player.gameBoard)
+    captainLog.addEventListener('click',function(){
+    const list = captainLog.querySelectorAll('.log')
+    captainLog.classList.add("consoleActivated")
+    captainLog.classList.remove("deactivated")
+    list.forEach(element => {
+        element.classList.add('logActivated')
+    });
+
+    })
+
+    restartBtn.addEventListener('click',function(){gameManager.restart()})
+    againBtn.addEventListener('click',function(){gameManager.restart()})
+
+}
+
+startGame()
 
