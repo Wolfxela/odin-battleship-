@@ -125,6 +125,8 @@ const gameManager = (function(){
             if(player.hasLost() === true)
             {
                 list[number].classList.add('destroyed')
+                const log = generalFuncModule.insertElement('div','log','we lost captain!',captainLog)
+                log.classList.add('logActivated')
                 console.log("you lost!")
                 return 'hit'
             }
