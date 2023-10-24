@@ -29,23 +29,25 @@ const domHandler = (function(){
         
         if(isPlayer !== true)
         {
-            spot.addEventListener('click',function(){
+                spot.addEventListener('click',function(){
                 const index = Array.from(spot.parentNode.children).indexOf(spot)
                 const result = gameManager.fireAt(index)
-
+                console.log(gameManager.isReady())
+                if(gameManager.isReady() === false) return
                 if(result === "hit")
                 {
                     spot.classList.add('destroyed')
                     
                 }
-                else if(result !== "already placed here")
+                else if(result !== "already placed here" && result !== false)
                 {
                     spot.classList.add('atacked')
                 }
-                if(result !== 'win' && result !== "already placed here" && gameManager.player.ships.length <= 0 )
+                if(result !== 'win' && result !== "already placed here")
                 {
                     while(true)
                     {
+
                         const isValid =  gameManager.getFiredAt(Math.floor(Math.random() * 63))
                         if(isValid=== 'hit'|| isValid === true) 
                         {
@@ -79,6 +81,7 @@ const domHandler = (function(){
 
 
 const gameManager = (function(){
+    const boardDiv = document.querySelector('.playerBoard')
     const captainLog = document.querySelector('.captainLog')
     const player = gameBoardMaker("player")
     const enemy = gameBoardMaker("enemy")
@@ -86,14 +89,14 @@ const gameManager = (function(){
 
     const fireAt = function(number)
     {
-        if(player.ships.length <= 0)
+        if(player.getShipsLength() <= 0)
         {
             const output = enemy.atack(number)
-            if(enemy.hasLost() === true)
+            if(hasLost(enemy) === true)
             {
-                const log = generalFuncModule.insertElement('div','log','we won captain!',captainLog)
+                restart()
+                const log = generalFuncModule.insertElement('div','log','we won captain,but another enemy is coming!',captainLog)
                 log.classList.add('logActivated')
-                return 'win'
             }
             else if(output === false)
             {
@@ -113,19 +116,18 @@ const gameManager = (function(){
     }
     const getFiredAt = function(number)
     {
-        const boardDiv = document.querySelector('.playerBoard')
-        const list = boardDiv.querySelectorAll('.spot')
 
+        const list = boardDiv.querySelectorAll('.spot')
         if(player.ships.length <= 0)
         {
             
             const output = player.atack(number)
-            if(player.hasLost() === true)
+            if(hasLost(player) === true)
             {
+                restart()
                 list[number].classList.add('destroyed')
-                const log = generalFuncModule.insertElement('div','log','we lost captain!',captainLog)
+                const log = generalFuncModule.insertElement('div','log','we lost captain, trya gain!',captainLog)
                 log.classList.add('logActivated')
-                return 'hit'
             }
             if(output ===  true)
             {
@@ -143,31 +145,41 @@ const gameManager = (function(){
             return false
         }
     }
+    const hasLost = function(board)
+    {
+        if(board.getShipsLeft() <=0)
+        {
+        return true
+        }
+        return false
+    }
+    const isReady = function()
+    {
+        if(player.getShipsLength() <= 0) return true
+        if(player.getShipsLength() > 0) return false
+    }
     const restart = function()
     {
         
-        this.player =gameBoardMaker("player")
-        this.enemy = gameBoardMaker("enemy")
-        this.enemy.ships = [4,3,3,2,2,1]
-        this.player.ships = [4,3,3,2,2,1]
-        this.player.atackedSpots = []
-        this.enemy.atackedSpots = []
-        this.player.setShipsLeft(6)
-        this.enemy.setShipsLeft(6)
-        gameData.randomisePlacement(enemy.ships,enemy.gameBoard)
+        player.reset()
+        enemy.reset()
+        enemy.randomiseShips()
         generalFuncModule.clearDom(captainLog,'.log')
         domHandler.clearBoards()
         domHandler.makeBoards()
     }
-    return{restart,getFiredAt,fireAt,player,enemy}
+    
+    return{restart,isReady,getFiredAt,fireAt,player,enemy}
 })();
 
 function startGame()
 {
-    domHandler.makeBoards()
-    const captainLog = document.querySelector('.captainLog')
     const restartBtn = document.querySelector('.reset')
     const againBtn = document.querySelector('.begin')
+    restartBtn.addEventListener('click',function(){gameManager.restart()})
+    againBtn.addEventListener('click',function(){gameManager.restart()})
+    domHandler.makeBoards()
+    const captainLog = document.querySelector('.captainLog')
 
     captainLog.addEventListener('click',function(){
     const list = captainLog.querySelectorAll('.log')
@@ -178,9 +190,6 @@ function startGame()
     });
 
     })
-
-    restartBtn.addEventListener('click',function(){gameManager.restart()})
-    againBtn.addEventListener('click',function(){gameManager.restart()})
 
 }
 

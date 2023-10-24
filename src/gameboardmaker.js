@@ -1,18 +1,42 @@
 import { boardMaker } from "./boardmaker";
+import { gameData } from "./gamedata";
 const gameBoardMaker = function(inputName)
 {
     const name = inputName
     let shipsleft = 6;
-    const atackedSpots = []
-    const ships = [4,3,3,2,2,1]
-    const gameBoard = boardMaker.makeBoard()
+    let atackedSpots = []
+    let ships = [4,3,3,2,2,1]
+    let gameBoard = boardMaker.makeBoard()
 
+    const reset = function()
+    {
+        shipsleft = 6;
+        atackedSpots = []
+        ships = [4,3,3,2,2,1]
+        gameBoard = boardMaker.makeBoard()
+    }
+    const randomiseShips = function()
+    {
+        gameData.randomisePlacement(ships,gameBoard)
+    }
+    const getGameBoard = function()
+    {
+        return gameBoard
+    }
+    const getShipsLength = function()
+    {
+        return ships.length
+    }
+    const getShipsLeft = function()
+    {
+        return shipsleft
+    }
     const place = function(coords,num)
     {
         const boardDiv = document.querySelector('.playerBoard')
         if(ships.length !== 0)
         {
-            if(boardMaker.placeShip(this.gameBoard,coords,ships[0]) === true)
+            if(boardMaker.placeShip(gameBoard,coords,ships[0]) === true)
             {
                 const list = boardDiv.querySelectorAll('.spot')
                 if(num !== undefined)
@@ -26,10 +50,6 @@ const gameBoardMaker = function(inputName)
                 ships.shift()
             }
         }
-    }
-    const setShipsLeft = function(input)
-    {
-        this.shipsleft = input
     }
     const atack = function(spot)
     {
@@ -57,15 +77,7 @@ const gameBoardMaker = function(inputName)
             return "hit"
         }
     }
-    const hasLost = function()
-    {
-        if(shipsleft <=0)
-        {
-            return true
-        }
-        return false
-    }
-    return{setShipsLeft,name,atackedSpots,ships,gameBoard,atack,hasLost,place}
+    return{shipsleft,name,atackedSpots,ships,gameBoard,atack,place,reset,getShipsLength,getShipsLeft,getGameBoard,randomiseShips}
 }
 
 export{gameBoardMaker}
